@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="msapplication-config" content="browserconfig.xml">
+    <meta name="theme-color" content="#2196f3">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="msapplication-starturl" content="./">
+    <meta name="description"
+          content="Progressive Web Application for serial communication with your own Bluetooth Low Energy (Smart) devices">
+
+    <title>Web Bluetooth Terminal</title>
+
+    <link href="manifest.json" rel="manifest">
+    <link rel="apple-touch-icon" sizes="180x180" href="icons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="icons/favicon-16x16.png">
+    <link rel="mask-icon" href="icons/safari-pinned-tab.svg" color="#2196f3">
+    <link rel="shortcut icon" href="icons/favicon.ico">
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="css/normalize.css" rel="stylesheet">
+    <link href="css/styles.css" rel="stylesheet">
+
+</head>
+<body>
+
+    <div class="app">
+
+        <div class="toolbar">
+
+            <div id="device-name" class="name">Terminal</div>
+
+            <div class="buttons">
+
+                <button id="connect" type="button" aria-label="Connect">
+                    <i class="material-icons">bluetooth_connected</i>
+                </button>
+
+                <button id="disconnect" type="button" aria-label="Disconnect">
+                    <i class="material-icons">bluetooth_disabled</i>
+                </button>
+
+            </div>
+
+        </div>
+        <!-- -->
+        <div id="terminal" class="terminal"></div>
+
+        <form id="send-form" class="send-form">
+
+            <input id="input" type="text" aria-label="Input" autocomplete="off" placeholder="Type something to send...">
+
+            <button type="submit" aria-label="Send">
+                <i class="material-icons">send</i>
+            </button>
+
+        </form>
+        Digital Clock Face: <input type="checkbox" id="check" onclick="clickFunction()">
+
+        <p id="btc"></p>
+
+    </div>
+
+    <script src="js/BluetoothTerminal.js"></script>
+    <script> 
+
+            var dig = false;
+
+            function clickFunction() {
+                var checkBox = document.getElementById("check");
+                var text = document.getElementById("text");
+
+                if (checkBox.checked == true){
+                    dig = true;
+                } else {
+                    dig = false;
+                }
+            }
+
+            var intervalID = window.setInterval(timerCallback, 30000);
+
+            function timerCallback() {
+            
+                var currentdate = new Date(); 
+                var hours;
+
+                if(currentdate.getHours() > 12) {
+                    hours = (currentdate.getHours()-12);
+                    if (hours < 10) {
+                        hours = "0" + hours;
+                    }
+                    var datetime = "H" + hours + "M"  
+                                + currentdate.getMinutes() + "S" 
+                                + currentdate.getSeconds();
+                        
+                    send(datetime);
+                } else {
+                    hours = (currentdate.getHours());
+                    if (hours < 10) {
+                        hours = "0" + hours;
+                    }
+                    var datetime = "H" + hours + "M"  
+                                + currentdate.getMinutes() + "S" 
+                                + currentdate.getSeconds();
+                    var dataFull = datetime;
+
+                    var currentPrice = new XMLHttpRequest();
+
+                    currentPrice.open('GET', 'https://api.gdax.com/products/BTC-USD/book', true);
+                    currentPrice.onreadystatechange = function(){
+                        if(currentPrice.readyState == 4){
+                            var ticker = JSON.parse(currentPrice.responseText);
+                            var price = ticker.bids[0][0];
+                            document.getElementById('btc').innerHTML = "B$" + price;
+                        };
+                    };
+                    
+                    if(dig) {
+                        dataFull = dataFull + "D";
+                    } else {
+                        dataFull = dataFull + "C";
+                    }
+                    dataFull = dataFull + document.getElementById("btc").textContent;
+                    console.log(dataFull);
+                    send(dataFull);
+                }
+            }
+    </script>
+    <script src="js/main.js"></script>
+    <script src="js/companion.js" data-service-worker="sw.js"></script>
+
+</body>
+</html>
