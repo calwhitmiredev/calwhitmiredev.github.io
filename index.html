@@ -107,7 +107,7 @@
                                 + currentdate.getMinutes() + "S" 
                                 + currentdate.getSeconds();
                     var dataFull = datetime;
-
+                }
                     var currentPrice = new XMLHttpRequest();
 
                     currentPrice.open('GET', 'https://api.gdax.com/products/BTC-USD/book', true);
@@ -118,7 +118,6 @@
                             document.getElementById('btc').innerHTML = "B$" + price;
                         };
                     };
-                 }
                 
                 if(dig) {
                     dataFull = dataFull + "D";
