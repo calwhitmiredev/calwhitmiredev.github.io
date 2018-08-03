@@ -97,6 +97,7 @@
                     var datetime = "H" + hours + "M"  
                                 + currentdate.getMinutes() + "S" 
                                 + currentdate.getSeconds();
+                    console.log("1");
                         
                 } else {
                     hours = (currentdate.getHours());
@@ -107,17 +108,21 @@
                                 + currentdate.getMinutes() + "S" 
                                 + currentdate.getSeconds();
                     var dataFull = datetime;
+                    console.log("2");
                 }
                     var currentPrice = new XMLHttpRequest();
-
+                    console.log("3");
                     currentPrice.open('GET', 'https://api.gdax.com/products/BTC-USD/book', true);
                     currentPrice.onreadystatechange = function(){
                         if(currentPrice.readyState == 4){
                             var ticker = JSON.parse(currentPrice.responseText);
                             var price = ticker.bids[0][0];
                             document.getElementById('btc').innerHTML = "B$" + price;
+                            console.log("4");
                         };
+                        console.log("5");
                     };
+                    console.log("6");
                 
                 if(dig) {
                     dataFull = dataFull + "D";
@@ -127,7 +132,7 @@
                 dataFull = dataFull + document.getElementById("btc").textContent;
                 console.log(dataFull);
                 send(dataFull);
-        }
+            }
             
     </script>
     <script src="js/main.js"></script>
