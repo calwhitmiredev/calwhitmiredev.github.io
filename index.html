@@ -88,7 +88,7 @@
             
                 var currentdate = new Date(); 
                 var hours;
-
+                console.log("0");
                 if(currentdate.getHours() > 12) {
                     hours = (currentdate.getHours()-12);
                     if (hours < 10) {
@@ -110,19 +110,19 @@
                     var dataFull = datetime;
                     console.log("2");
                 }
-                    var currentPrice = new XMLHttpRequest();
-                    console.log("3");
-                    currentPrice.open('GET', 'https://api.gdax.com/products/BTC-USD/book', true);
-                    currentPrice.onreadystatechange = function(){
-                        if(currentPrice.readyState == 4){
-                            var ticker = JSON.parse(currentPrice.responseText);
-                            var price = ticker.bids[0][0];
-                            document.getElementById('btc').innerHTML = "B$" + price;
-                            console.log("4");
-                        };
-                        console.log("5");
-                    };
-                    console.log("6");
+                var currentPrice = new XMLHttpRequest();
+                console.log("3");
+                currentPrice.open('GET', 'https://api.gdax.com/products/BTC-USD/book', true);
+                currentPrice.onreadystatechange = function(){
+                if(currentPrice.readyState == 4){
+                    var ticker = JSON.parse(currentPrice.responseText);
+                    var price = ticker.bids[0][0];
+                    document.getElementById('btc').innerHTML = "B$" + price;
+                    console.log("4");
+                };
+                    console.log("5");
+                };
+                 console.log("6");
                 
                 if(dig) {
                     dataFull = dataFull + "D";
