@@ -98,7 +98,6 @@
                                 + currentdate.getMinutes() + "S" 
                                 + currentdate.getSeconds();
                         
-                    send(datetime);
                 } else {
                     hours = (currentdate.getHours());
                     if (hours < 10) {
@@ -119,17 +118,18 @@
                             document.getElementById('btc').innerHTML = "B$" + price;
                         };
                     };
-                    
-                    if(dig) {
-                        dataFull = dataFull + "D";
-                    } else {
-                        dataFull = dataFull + "C";
-                    }
-                    dataFull = dataFull + document.getElementById("btc").textContent;
-                    console.log(dataFull);
-                    send(dataFull);
+                 }
+                
+                if(dig) {
+                    dataFull = dataFull + "D";
+                } else {
+                    dataFull = dataFull + "C";
                 }
-            }
+                dataFull = dataFull + document.getElementById("btc").textContent;
+                console.log(dataFull);
+                send(dataFull);
+        }
+            
     </script>
     <script src="js/main.js"></script>
     <script src="js/companion.js" data-service-worker="sw.js"></script>
